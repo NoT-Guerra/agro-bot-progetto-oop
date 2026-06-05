@@ -13,6 +13,7 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 application {
@@ -27,6 +28,14 @@ java {
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        // Mostra gli eventi di test superati, falliti o saltati
+        events("passed", "skipped", "failed")
+        // Mostra le eccezioni in modo dettagliato se un test fallisce
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+    }
 }
 
 tasks.jar {

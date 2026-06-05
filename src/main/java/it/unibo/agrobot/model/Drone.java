@@ -1,10 +1,14 @@
 package it.unibo.agrobot.model;
 
 /**
- * definisce il comportamento di base del drone.
+ * rappresenta l'entità principale controllata dal giocatore, ovvero il drone che si muove nel campo.
+ * definisce le funzionalità per interrogarne lo stato e per muoverlo nello spazio.
  */
 public interface Drone {
 
+    /**
+     * @return l'oggetto position che contiente le coordinate attuali del drone
+     */
     Position getPosition();
 
     /**

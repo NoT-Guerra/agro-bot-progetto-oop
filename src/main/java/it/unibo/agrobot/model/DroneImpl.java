@@ -1,7 +1,9 @@
 package it.unibo.agrobot.model;
 
 /**
- * implementazione base del Drone
+ * implementazione dell'interfaccia Drone.
+ * Mantiene lo stato interno del drone come le coordinate e ne gestisce
+ * l'aggiornamento durante la simulazione.
  */
 public class DroneImpl implements Drone {
 

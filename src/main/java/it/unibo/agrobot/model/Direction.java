@@ -1,8 +1,9 @@
 package it.unibo.agrobot.model;
 
 /**
- * Rappresenta le quattro direzioni cardinali principali in cui il drone può muoversi.
- * Saranno poi associate ai comandi della tastiera (es. WASD).
+ * Direction sono le 4 direzione nel quale il drone si puo muovere
+ * sopra, destra, sinsitra, sotto
+ *  saranno poi comandate dai comandi della tastiera con WASD.
  */
 public enum Direction {
     UP,

@@ -25,4 +25,24 @@ public class DroneImpl implements Drone {
         this.position.setX(newX);
         this.position.setY(newY);
     }
+
+    @Override
+    public void move(Direction dir, double distance) {
+        switch (dir) {
+            case UP:
+                this.move(0, distance);
+                break;
+            case DOWN:
+                this.move(0, -distance);
+                break;
+            case LEFT:
+                this.move(-distance, 0);
+                break;
+            case RIGHT:
+                this.move(distance, 0);
+                break;
+            default:
+                break;
+        }
+    }
 }

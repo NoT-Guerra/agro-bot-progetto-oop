@@ -20,4 +20,13 @@ public interface Drone {
      * @param deltaY valore da sommare all'attuale coordinata Y
      */
     void move(double deltaX, double deltaY);
+
+    /**
+     * Sposta il drone in una specifica direzione per una determinata distanza.
+     * risulta utile per collegare gli input da tastiera.
+     * 
+     * @param dir la direzione verso cui muoversi
+     * @param distance l'entità dello spostamento
+     */
+    void move(Direction dir, double distance);
 }

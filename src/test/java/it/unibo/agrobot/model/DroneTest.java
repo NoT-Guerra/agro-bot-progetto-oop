@@ -26,5 +26,24 @@ class DroneTest {
         
         assertEquals(15.0, drone.getPosition().getX(), 0.001);
         assertEquals(8.0, drone.getPosition().getY(), 0.001);
+        System.out.println("testMovement: PASSATO");
+    }
+
+    @Test
+    void testDirectionalMovement() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        // Muoviamo in alto di 5 unità (es. tasto W)
+        drone.move(Direction.UP, 5.0);
+        assertEquals(0.0, drone.getPosition().getX(), 0.001);
+        assertEquals(5.0, drone.getPosition().getY(), 0.001); // assumendo Y cresca verso l'alto
+
+        // Muoviamo a destra di 10 unità (es. tasto D)
+        drone.move(Direction.RIGHT, 10.0);
+        assertEquals(10.0, drone.getPosition().getX(), 0.001);
+        assertEquals(5.0, drone.getPosition().getY(), 0.001);
+
+        System.out.println("testDirectionalMovement: PASSATO");
     }
 }

@@ -8,9 +8,19 @@ package it.unibo.agrobot.model;
 public class DroneImpl implements Drone {
 
     private Position position;
+    private Battery battery;
+    
+    // Costante per il consumo base per movimento
+    private static final double MOVEMENT_ENERGY_COST = 2.0;
 
     public DroneImpl(Position position) {
         this.position = position;
+        this.battery = new Battery(100.0); // La batteria parte sempre carica al max
+    }
+
+    @Override
+    public double getBatteryLevel() {
+        return this.battery.getLevel();
     }
 
     @Override
@@ -20,10 +30,13 @@ public class DroneImpl implements Drone {
 
     @Override
     public void move(double deltaX, double deltaY) {
-        double newX = this.position.getX() + deltaX;
-        double newY = this.position.getY() + deltaY;
-        this.position.setX(newX);
-        this.position.setY(newY);
+        if (!this.battery.isDead()) {
+            this.battery.decrease(MOVEMENT_ENERGY_COST);
+            double newX = this.position.getX() + deltaX;
+            double newY = this.position.getY() + deltaY;
+            this.position.setX(newX);
+            this.position.setY(newY);
+        }
     }
 
     @Override

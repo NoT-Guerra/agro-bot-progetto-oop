@@ -3,6 +3,7 @@ package it.unibo.agrobot.model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class DroneTest {
 
@@ -94,5 +95,23 @@ class DroneTest {
         assertTrue(drone.getBatteryLevel() < batteryAfterPlow);
         
         System.out.println("testAgriculturalActionsConsumption: PASSATO");
+    }
+
+    @Test
+    void testDeathAndRecharge() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        for (int i = 0; i < 60; i++) {
+            drone.move(1.0, 1.0);
+        }
+        
+        assertTrue(drone.isDead());
+        
+        drone.rechargeAtHangar();
+        assertFalse(drone.isDead());
+        assertEquals(100.0, drone.getBatteryLevel(), 0.001);
+        
+        System.out.println("testDeathAndRecharge: PASSATO");
     }
 }

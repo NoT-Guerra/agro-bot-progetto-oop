@@ -65,15 +65,15 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        // Simuliamo movimenti finché la batteria non si scarica (100.0 / 2.0 = 50 mosse)
+        //simuliamo movimenti finché la batteria non si scarica (100.0 / 2.0 = 50 mosse)
         for (int i = 0; i < 60; i++) {
             drone.move(1.0, 1.0);
         }
         
-        // Salviamo la posizione dopo che la batteria è esaurita
+        //Salviamo la posizione dopo che la batteria è esaurita
         Position posBeforeDeadMove = new Position(drone.getPosition().getX(), drone.getPosition().getY());
         
-        // Proviamo a muoverci ancora, non dovrebbe funzionare
+        //Proviamo a muoverci ancora, non dovrebbe funzionare
         drone.move(1.0, 1.0);
         
         assertEquals(posBeforeDeadMove.getX(), drone.getPosition().getX(), 0.001);
@@ -113,5 +113,15 @@ class DroneTest {
         assertEquals(100.0, drone.getBatteryLevel(), 0.001);
         
         System.out.println("testDeathAndRecharge: PASSATO");
+    }
+
+    @Test
+    void testInitialWaterLevel() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        //ci aspettiamo che il drone parta con il serbatoio vuoto
+        assertEquals(0.0, drone.getWaterLevel(), 0.001);
+        System.out.println("testInitialWaterLevel: PASSATO");
     }
 }

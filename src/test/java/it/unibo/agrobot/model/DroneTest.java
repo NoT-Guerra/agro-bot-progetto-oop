@@ -1,3 +1,19 @@
+package it.unibo.agrobot.model;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class DroneTest {
+
+    @Test
+    void testInitialPosition() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        assertEquals(0.0, drone.getPosition().getX(), 0.001);
+        assertEquals(0.0, drone.getPosition().getY(), 0.001);
+        System.out.println("testInitialPosition: PASSATO");
     }
 
     @Test

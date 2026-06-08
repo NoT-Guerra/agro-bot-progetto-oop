@@ -79,4 +79,20 @@ class DroneTest {
         assertEquals(posBeforeDeadMove.getY(), drone.getPosition().getY(), 0.001);
         System.out.println("testNoMovementWhenDead: PASSATO");
     }
+
+    @Test
+    void testAgriculturalActionsConsumption() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        double initialBattery = drone.getBatteryLevel();
+        
+        drone.plow();
+        assertTrue(drone.getBatteryLevel() < initialBattery);
+        
+        double batteryAfterPlow = drone.getBatteryLevel();
+        drone.harvest();
+        assertTrue(drone.getBatteryLevel() < batteryAfterPlow);
+        
+        System.out.println("testAgriculturalActionsConsumption: PASSATO");
+    }
 }

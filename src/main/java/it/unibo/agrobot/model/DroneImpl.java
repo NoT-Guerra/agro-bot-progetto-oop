@@ -1,17 +1,19 @@
 package it.unibo.agrobot.model;
 
 /**
- * implementazione dell'interfaccia Drone.
+ * implementazione dell'interfaccia Drone
  * Mantiene lo stato interno del drone come le coordinate e ne gestisce
- * l'aggiornamento durante la simulazione.
+ * l'aggiornamento durante la simulazione
  */
 public class DroneImpl implements Drone {
 
     private Position position;
     private Battery battery;
     
-    // Costante per il consumo base per movimento
+    //costante per il consumo base per movimento
     private static final double MOVEMENT_ENERGY_COST = 2.0;
+    //costante per il consumo delle azioni agricole
+    private static final double ACTION_ENERGY_COST = 5.0;
 
     public DroneImpl(Position position) {
         this.position = position;
@@ -56,6 +58,24 @@ public class DroneImpl implements Drone {
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void plow() {
+        if (!this.battery.isDead()) {
+            this.battery.decrease(ACTION_ENERGY_COST);
+            //todo
+            //inserisci la logica di interazione col terreno 
+        }
+    }
+
+    @Override
+    public void harvest() {
+        if (!this.battery.isDead()) {
+            this.battery.decrease(ACTION_ENERGY_COST);
+            //todo
+            //isnerisci logica di raccolta risorsa 
         }
     }
 }

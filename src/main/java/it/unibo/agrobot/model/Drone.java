@@ -34,4 +34,16 @@ public interface Drone {
      * @param distance l'entità dello spostamento
      */
     void move(Direction dir, double distance);
+
+    /**
+     * esegue azione di aratura del terreno
+     * questa azione consuma più energia rispetto a un normale movimento
+     */
+    void plow();
+
+    /**
+     * Raccoglie la risorsa presente nella posizione in cuio si trova drone
+     * questa azione richiede energia risepetto ad un normale movimento
+     */
+    void harvest();
 }

@@ -7,9 +7,14 @@ package it.unibo.agrobot.model;
 public interface Drone {
 
     /**
-     * @return l'oggetto position che contiente le coordinate attuali del drone
+     * @return l'oggetto position che contiene le coordinate attuali del drone
      */
     Position getPosition();
+
+    /**
+     * @return il livello attuale di carica della batteria
+     */
+    double getBatteryLevel();
 
     /**
      * sposta il drone rispetto alla sua posizione attuale

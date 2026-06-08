@@ -17,6 +17,11 @@ public interface Drone {
     double getBatteryLevel();
 
     /**
+     * @return il livello attuale di acqua nel serbatoio del drone
+     */
+    double getWaterLevel();
+
+    /**
      * sposta il drone rispetto alla sua posizione attuale
      * il movimento avviene tramite l'aggiunta di una differenza
      * alle coordinate X e Y

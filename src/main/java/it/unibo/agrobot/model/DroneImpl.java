@@ -9,6 +9,7 @@ public class DroneImpl implements Drone {
 
     private Position position;
     private Battery battery;
+    private WaterTank waterTank;
     
     //costante per il consumo base per movimento
     private static final double MOVEMENT_ENERGY_COST = 2.0;
@@ -18,11 +19,17 @@ public class DroneImpl implements Drone {
     public DroneImpl(Position position) {
         this.position = position;
         this.battery = new Battery(100.0); // La batteria parte sempre carica al max
+        this.waterTank = new WaterTank(50.0); //serbatoio parte vuoto, capienza 50
     }
 
     @Override
     public double getBatteryLevel() {
         return this.battery.getLevel();
+    }
+
+    @Override
+    public double getWaterLevel() {
+        return this.waterTank.getLevel();
     }
 
     @Override

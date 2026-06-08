@@ -30,4 +30,20 @@ public class Battery {
             this.level = 0;
         }
     }
+
+    /**
+     * ripristina l'energia al valore massimo consentito.
+     */
+    public void recharge() {
+        this.level = this.maxCapacity;
+    }
+
+    /**
+     * Verifica se il drone ha esaurito l'energia
+     * 
+     * @return true se l'energia è pari a 0, false altrimenti
+     */
+    public boolean isDead() {
+        return this.level <= 0;
+    }
 }

@@ -42,8 +42,20 @@ public interface Drone {
     void plow();
 
     /**
-     * Raccoglie la risorsa presente nella posizione in cuio si trova drone
-     * questa azione richiede energia risepetto ad un normale movimento
+     * Raccoglie la risorsa presente nella posizione corrente.
+     * Questa azione richiede energia.
      */
     void harvest();
+
+    /**
+     * Verifica se il drone è a corto di energia e non può più operare.
+     * @return true se l'energia è 0, false altrimenti
+     */
+    boolean isDead();
+
+    /**
+     * Ripristina l'energia del drone ricaricandone la batteria.
+     * Chiamato idealmente quando il drone si trova sull'hangar.
+     */
+    void rechargeAtHangar();
 }

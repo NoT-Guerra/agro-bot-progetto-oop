@@ -74,8 +74,17 @@ public class DroneImpl implements Drone {
     public void harvest() {
         if (!this.battery.isDead()) {
             this.battery.decrease(ACTION_ENERGY_COST);
-            //todo
-            //isnerisci logica di raccolta risorsa 
+            // La logica effettiva di raccolta risorsa verrà inserita qui
         }
+    }
+
+    @Override
+    public boolean isDead() {
+        return this.battery.isDead();
+    }
+
+    @Override
+    public void rechargeAtHangar() {
+        this.battery.recharge();
     }
 }

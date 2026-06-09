@@ -11,15 +11,21 @@ public class DroneImpl implements Drone {
     private Battery battery;
     private WaterTank waterTank;
     
-    //costante per il consumo base per movimento
+    //variabili per il movimento fluido
+    private boolean moving;
+    private Position targetPosition;
+    private static final double SPEED = 2.0; // Unità al secondo
+    
+    //costante per il consumo base del movimento
     private static final double MOVEMENT_ENERGY_COST = 2.0;
     //costante per il consumo delle azioni agricole
     private static final double ACTION_ENERGY_COST = 5.0;
 
     public DroneImpl(Position position) {
         this.position = position;
-        this.battery = new Battery(100.0); // La batteria parte sempre carica al max
-        this.waterTank = new WaterTank(50.0); //serbatoio parte vuoto, capienza 50
+        this.battery = new Battery(100.0); //la batteria parte sempre carica al max
+        this.waterTank = new WaterTank(50.0); //Serbatoio parte vuoto, capienza 50
+        this.moving = false;
     }
 
     @Override
@@ -38,33 +44,58 @@ public class DroneImpl implements Drone {
     }
 
     @Override
-    public void move(double deltaX, double deltaY) {
-        if (!this.battery.isDead()) {
-            this.battery.decrease(MOVEMENT_ENERGY_COST);
-            double newX = this.position.getX() + deltaX;
-            double newY = this.position.getY() + deltaY;
-            this.position.setX(newX);
-            this.position.setY(newY);
-        }
+    public boolean isMoving() {
+        return this.moving;
     }
 
     @Override
-    public void move(Direction dir, double distance) {
-        switch (dir) {
-            case UP:
-                this.move(0, distance);
-                break;
-            case DOWN:
-                this.move(0, -distance);
-                break;
-            case LEFT:
-                this.move(-distance, 0);
-                break;
-            case RIGHT:
-                this.move(distance, 0);
-                break;
-            default:
-                break;
+    public boolean move(Direction dir) {
+        if (!this.moving && !this.battery.isDead()) {
+            this.battery.decrease(MOVEMENT_ENERGY_COST);
+            this.moving = true;
+            
+            double targetX = this.position.getX();
+            double targetY = this.position.getY();
+            
+            switch (dir) {
+                case UP: targetY += 1.0; break;
+                case DOWN: targetY -= 1.0; break;
+                case LEFT: targetX -= 1.0; break;
+                case RIGHT: targetX += 1.0; break;
+            }
+            this.targetPosition = new Position(targetX, targetY);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void updateState(double deltaTime) {
+        if (this.moving) {
+            double distanceToTravel = SPEED * deltaTime;
+            
+            double currentX = this.position.getX();
+            double currentY = this.position.getY();
+            double targetX = this.targetPosition.getX();
+            double targetY = this.targetPosition.getY();
+            
+            //calcolo distanza verso il target
+            double dx = targetX - currentX;
+            double dy = targetY - currentY;
+            double distanceToTarget = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distanceToTravel >= distanceToTarget) {
+                //raggiunto o superato il target: allineamento alla griglia
+                this.position.setX(targetX);
+                this.position.setY(targetY);
+                this.moving = false;
+            } else {
+                //Movimento intermedio
+                double dirX = dx / distanceToTarget;
+                double dirY = dy / distanceToTarget;
+                this.position.setX(currentX + (dirX * distanceToTravel));
+                this.position.setY(currentY + (dirY * distanceToTravel));
+            }
         }
     }
 

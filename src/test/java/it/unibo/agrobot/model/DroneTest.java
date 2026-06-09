@@ -136,4 +136,27 @@ class DroneTest {
         assertEquals(50.0, drone.getWaterLevel(), 0.001); //Il serbatoio (capacità 50) deve essere pieno
         System.out.println("testRechargeWater: PASSATO");
     }
+
+    @Test
+    void testIrrigate() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        //all'inizio non ha acqua, quindi irrigare deve fallire
+        assertFalse(drone.irrigate());
+        
+        drone.rechargeWaterAtLake();
+        
+        double batteryBefore = drone.getBatteryLevel();
+        double waterBefore = drone.getWaterLevel();
+        
+        //or irrigazione deve riuscire
+        assertTrue(drone.irrigate());
+        
+        // controllo  che l'acqua sia scesa di 10.0 e la batteria sia diminuita
+        assertEquals(waterBefore - 10.0, drone.getWaterLevel(), 0.001);
+        assertTrue(drone.getBatteryLevel() < batteryBefore);
+        
+        System.out.println("testIrrigate: PASSATO");
+    }
 }

@@ -124,4 +124,16 @@ class DroneTest {
         assertEquals(0.0, drone.getWaterLevel(), 0.001);
         System.out.println("testInitialWaterLevel: PASSATO");
     }
+
+    @Test
+    void testRechargeWater() {
+        Position initial = new Position(0.0, 0.0);
+        Drone drone = new DroneImpl(initial);
+        
+        assertEquals(0.0, drone.getWaterLevel(), 0.001); //parte vuoto
+        drone.rechargeWaterAtLake(); //drone arrivo al lago
+        
+        assertEquals(50.0, drone.getWaterLevel(), 0.001); //Il serbatoio (capacità 50) deve essere pieno
+        System.out.println("testRechargeWater: PASSATO");
+    }
 }

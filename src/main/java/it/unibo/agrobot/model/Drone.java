@@ -22,29 +22,33 @@ public interface Drone {
     double getWaterLevel();
 
     /**
-     * sposta il drone rispetto alla sua posizione attuale
-     * il movimento avviene tramite l'aggiunta di una differenza
-     * alle coordinate X e Y
+     * prova ad avviare il movimento del drone in una specifica direzione
+     * il drone si sposterà sempre esattamente di una casella (1.0) alla volta
+     * se il drone si sta già muovendo, il comando viene ignorato.
      * 
-     * @param deltaX valore da sommare all'attuale coordinata X
-     * @param deltaY valore da sommare all'attuale coordinata Y
+     * @param dir la direzione in cui spostarsi
+     * @return true se il comando è stato accettato, false se era già in movimento o senza batteria
      */
-    void move(double deltaX, double deltaY);
+    boolean move(Direction dir);
+
+    /**
+     * @return true se il drone è attualmente in viaggio tra due caselle, false se è fermo
+     */
+    boolean isMoving();
+
+    /**
+     * aggiorna lo stato fisico del drone nel tempo.
+     * verra chiamato ripetutamente dal Game Loop
+     * 
+     * @param deltaTime il tempo trascorso dall'ultimo frame(in secondi o sottomultipli)
+     */
+    void updateState(double deltaTime);
 
     /**
      * ticarica completamente il serbatoio dell'acqua del drone
      * chiamato quando il drone si trova sul lago
      */
     void rechargeWaterAtLake();
-
-    /**
-     * Sposta il drone in una specifica direzione per una determinata distanza
-     * (serve per collegare gli input da tastiera)
-     * 
-     * @param dir la direzione verso cui muoversi
-     * @param distance l'entità dello spostamento
-     */
-    void move(Direction dir, double distance);
 
     /**
      * esegue azione di aratura del terreno

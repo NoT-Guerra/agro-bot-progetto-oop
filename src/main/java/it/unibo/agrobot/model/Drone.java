@@ -38,8 +38,8 @@ public interface Drone {
     void rechargeWaterAtLake();
 
     /**
-     * Sposta il drone in una specifica direzione per una determinata distanza.
-     * risulta utile per collegare gli input da tastiera.
+     * Sposta il drone in una specifica direzione per una determinata distanza
+     * (serve per collegare gli input da tastiera)
      * 
      * @param dir la direzione verso cui muoversi
      * @param distance l'entità dello spostamento
@@ -53,20 +53,28 @@ public interface Drone {
     void plow();
 
     /**
-     * Raccoglie la risorsa presente nella posizione corrente.
-     * Questa azione richiede energia.
+     * raccoglie la risorsa presente nella posizione corrente
+     * esegurie questa azione consuma energia(piu del movimento)
      */
     void harvest();
 
     /**
-     * Verifica se il drone è a corto di energia e non può più operare.
+     * butta acqua sul terreno per irrigare
+     * consuma sia acqua dal serbatoio(consuma 10 su max 50) che energia dalla batteria
+     * 
+     * @return true se c'era abbastanza acqua ed energia per irrigare, false altrimenti
+     */
+    boolean irrigate();
+
+    /**
+     * Verifica se il drone ha ancora batteria
      * @return true se l'energia è 0, false altrimenti
      */
     boolean isDead();
 
     /**
-     * Ripristina l'energia del drone ricaricandone la batteria.
-     * Chiamato idealmente quando il drone si trova sull'hangar.
+     * Ripristina l'energia del drone ricaricando la batteria
+     * viene chiamata quando il drone si trova sull hanggar
      */
     void rechargeAtHangar();
 }

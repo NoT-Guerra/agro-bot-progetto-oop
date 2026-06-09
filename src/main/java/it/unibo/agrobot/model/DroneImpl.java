@@ -86,6 +86,17 @@ public class DroneImpl implements Drone {
     }
 
     @Override
+    public boolean irrigate() {
+        double IRRIGATION_WATER_COST = 10.0;
+        if (!this.battery.isDead() && this.waterTank.getLevel() >= IRRIGATION_WATER_COST) {
+            this.battery.decrease(ACTION_ENERGY_COST);
+            this.waterTank.remove(IRRIGATION_WATER_COST);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean isDead() {
         return this.battery.isDead();
     }

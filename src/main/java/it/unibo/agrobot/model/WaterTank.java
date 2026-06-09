@@ -30,6 +30,13 @@ public class WaterTank {
     }
 
     /**
+     * riempie il serbatoio fino alla sua capacità massima
+     */
+    public void fill() {
+        this.level = this.maxCapacity;
+    }
+
+    /**
      * rimuove acqua dal serbatoio fermandosi a zero se necessario
      * 
      * @param amount quantità d'acqua da rimuovere

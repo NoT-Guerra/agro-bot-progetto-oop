@@ -94,4 +94,9 @@ public class DroneImpl implements Drone {
     public void rechargeAtHangar() {
         this.battery.recharge();
     }
+
+    @Override
+    public void rechargeWaterAtLake() {
+        this.waterTank.fill();
+    }
 }

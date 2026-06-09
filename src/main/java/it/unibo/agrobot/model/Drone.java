@@ -32,6 +32,12 @@ public interface Drone {
     void move(double deltaX, double deltaY);
 
     /**
+     * ticarica completamente il serbatoio dell'acqua del drone
+     * chiamato quando il drone si trova sul lago
+     */
+    void rechargeWaterAtLake();
+
+    /**
      * Sposta il drone in una specifica direzione per una determinata distanza.
      * risulta utile per collegare gli input da tastiera.
      * 

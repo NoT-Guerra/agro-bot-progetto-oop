@@ -18,33 +18,29 @@ class DroneTest {
     }
 
     @Test
-    void testMovement() {
-        Position initial = new Position(10.0, 10.0);
-        Drone drone = new DroneImpl(initial);
-        
-        drone.move(5.0, -2.0);
-        
-        assertEquals(15.0, drone.getPosition().getX(), 0.001);
-        assertEquals(8.0, drone.getPosition().getY(), 0.001);
-        System.out.println("testMovement: PASSATO");
-    }
-
-    @Test
-    void testDirectionalMovement() {
+    void testSmoothMovement() {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //muoviamo in alto di 5 posizioni
-        drone.move(Direction.UP, 5.0);
+        //diamo il comando di muoversi verso l'alto
+        assertTrue(drone.move(Direction.UP));
+        assertTrue(drone.isMoving());
+        
+        //Simuliamo un quarto di secondo (Velocità 2.0 * 0.25s = 0.5 spazio percorso)
+        drone.updateState(0.25);
         assertEquals(0.0, drone.getPosition().getX(), 0.001);
-        assertEquals(5.0, drone.getPosition().getY(), 0.001); // assumendo Y cresca verso l'alto
-
-        //muovi a destra di 10 pos 
-        drone.move(Direction.RIGHT, 10.0);
-        assertEquals(10.0, drone.getPosition().getX(), 0.001);
-        assertEquals(5.0, drone.getPosition().getY(), 0.001);
-
-        System.out.println("testDirectionalMovement: PASSATO");
+        assertEquals(0.5, drone.getPosition().getY(), 0.001);
+        assertTrue(drone.isMoving()); // È ancora in viaggio
+        
+        //simuliamo un altro quarto di secondo (raggiunge 1.0 esatto)
+        drone.updateState(0.25);
+        assertEquals(0.0, drone.getPosition().getX(), 0.001);
+        assertEquals(1.0, drone.getPosition().getY(), 0.001);
+        
+        //deve essersi fermato e allineato
+        assertFalse(drone.isMoving());
+        
+        System.out.println("testSmoothMovement: PASSATO");
     }
 
     @Test
@@ -53,9 +49,10 @@ class DroneTest {
         Drone drone = new DroneImpl(initial);
         double initialBattery = drone.getBatteryLevel();
         
-        drone.move(5.0, -2.0);
+        //avviamo il movimento
+        drone.move(Direction.RIGHT);
         
-        // Verifichiamo che il livello della batteria sia sceso
+        //la batteria viene scalata all'avvio del movimento
         assertTrue(drone.getBatteryLevel() < initialBattery);
         System.out.println("testMovementBatteryConsumption: PASSATO");
     }
@@ -65,19 +62,16 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //simuliamo movimenti finché la batteria non si scarica (100.0 / 2.0 = 50 mosse)
-        for (int i = 0; i < 60; i++) {
-            drone.move(1.0, 1.0);
+        //scarichiamo la batteria forzando 50 movimenti (50 * 2.0 = 100)
+        for (int i = 0; i < 50; i++) {
+            drone.move(Direction.UP);
+            drone.updateState(0.5); // per farlo arrivare subito a destinazione (2.0 * 0.5 = 1.0)
         }
         
-        //Salviamo la posizione dopo che la batteria è esaurita
-        Position posBeforeDeadMove = new Position(drone.getPosition().getX(), drone.getPosition().getY());
+        //orra la batteria è 0, il movimento deve essere rifiutato
+        assertFalse(drone.move(Direction.UP)); 
+        assertFalse(drone.isMoving());
         
-        //Proviamo a muoverci ancora, non dovrebbe funzionare
-        drone.move(1.0, 1.0);
-        
-        assertEquals(posBeforeDeadMove.getX(), drone.getPosition().getX(), 0.001);
-        assertEquals(posBeforeDeadMove.getY(), drone.getPosition().getY(), 0.001);
         System.out.println("testNoMovementWhenDead: PASSATO");
     }
 
@@ -102,8 +96,9 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        for (int i = 0; i < 60; i++) {
-            drone.move(1.0, 1.0);
+        for (int i = 0; i < 50; i++) {
+            drone.move(Direction.UP);
+            drone.updateState(0.5);
         }
         
         assertTrue(drone.isDead());
@@ -120,7 +115,6 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //ci aspettiamo che il drone parta con il serbatoio vuoto
         assertEquals(0.0, drone.getWaterLevel(), 0.001);
         System.out.println("testInitialWaterLevel: PASSATO");
     }
@@ -130,10 +124,9 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        assertEquals(0.0, drone.getWaterLevel(), 0.001); //parte vuoto
-        drone.rechargeWaterAtLake(); //drone arrivo al lago
+        drone.rechargeWaterAtLake(); 
         
-        assertEquals(50.0, drone.getWaterLevel(), 0.001); //Il serbatoio (capacità 50) deve essere pieno
+        assertEquals(50.0, drone.getWaterLevel(), 0.001);
         System.out.println("testRechargeWater: PASSATO");
     }
 
@@ -142,7 +135,6 @@ class DroneTest {
         Position initial = new Position(0.0, 0.0);
         Drone drone = new DroneImpl(initial);
         
-        //all'inizio non ha acqua, quindi irrigare deve fallire
         assertFalse(drone.irrigate());
         
         drone.rechargeWaterAtLake();
@@ -150,10 +142,8 @@ class DroneTest {
         double batteryBefore = drone.getBatteryLevel();
         double waterBefore = drone.getWaterLevel();
         
-        //or irrigazione deve riuscire
         assertTrue(drone.irrigate());
         
-        // controllo  che l'acqua sia scesa di 10.0 e la batteria sia diminuita
         assertEquals(waterBefore - 10.0, drone.getWaterLevel(), 0.001);
         assertTrue(drone.getBatteryLevel() < batteryBefore);
         

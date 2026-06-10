@@ -80,5 +80,73 @@ class InventoryTest {
         System.out.println("testSlotRemove: PASSATO");
     }
 
-    
+    @Test
+    void testInventoryAddAndStack() {
+        Inventory inv = new Inventory(3);
+
+        //aggiungiamo 3 semi di pomodoro, devono finire nello stesso slot
+        assertTrue(inv.addItem("Pomodoro", ItemType.SEED));
+        assertTrue(inv.addItem("Pomodoro", ItemType.SEED));
+        assertTrue(inv.addItem("Pomodoro", ItemType.SEED));
+        assertEquals(3, inv.getItemCount("Pomodoro"));
+
+        //controlliamo che siano tutti nello slot 0
+        assertEquals(3, inv.getSlot(0).getQuantity());
+        assertTrue(inv.getSlot(1).isEmpty());
+
+        System.out.println("testInventoryAddAndStack: PASSATO");
+    }
+
+    @Test
+    void testInventoryFull() {
+        Inventory inv = new Inventory(3);
+
+        //riempiamo i 3 slot con 3 oggetti diversi
+        assertTrue(inv.addItem("Pomodoro", ItemType.SEED));
+        assertTrue(inv.addItem("Grano", ItemType.CROP));
+        assertTrue(inv.addItem("Carota", ItemType.SEED));
+
+        //il quarto tipo di oggetto non ha slot liberi
+        assertFalse(inv.addItem("Mais", ItemType.CROP));
+
+        System.out.println("testInventoryFull: PASSATO");
+    }
+
+    @Test
+    void testInventoryRemove() {
+        Inventory inv = new Inventory(3);
+
+        inv.addItem("Pomodoro", ItemType.CROP);
+        inv.addItem("Pomodoro", ItemType.CROP);
+
+        assertTrue(inv.removeItem("Pomodoro"));
+        assertEquals(1, inv.getItemCount("Pomodoro"));
+
+        //rimuoviamo qualcosa che non esiste
+        assertFalse(inv.removeItem("Grano"));
+
+        System.out.println("testInventoryRemove: PASSATO");
+    }
+
+    @Test
+    void testInventoryAddSlot() {
+        Inventory inv = new Inventory(3);
+
+        //riempiamo tutti gli slot
+        inv.addItem("Pomodoro", ItemType.SEED);
+        inv.addItem("Grano", ItemType.CROP);
+        inv.addItem("Carota", ItemType.SEED);
+
+        //non ce spazio
+        assertFalse(inv.addItem("Mais", ItemType.CROP));
+
+        //compriamo un nuovo slot al mercato
+        inv.addSlot();
+        assertEquals(4, inv.getSlotCount());
+
+        //ora c e spazio
+        assertTrue(inv.addItem("Mais", ItemType.CROP));
+
+        System.out.println("testInventoryAddSlot: PASSATO");
+    }
 }

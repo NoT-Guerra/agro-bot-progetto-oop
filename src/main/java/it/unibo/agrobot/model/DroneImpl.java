@@ -10,6 +10,7 @@ public class DroneImpl implements Drone {
     private Position position;
     private Battery battery;
     private WaterTank waterTank;
+    private Inventory inventory;
     
     //variabili per il movimento fluido
     private boolean moving;
@@ -24,7 +25,8 @@ public class DroneImpl implements Drone {
     public DroneImpl(Position position) {
         this.position = position;
         this.battery = new Battery(100.0); //la batteria parte sempre carica al max
-        this.waterTank = new WaterTank(50.0); //Serbatoio parte vuoto, capienza 50
+        this.waterTank = new WaterTank(50.0); //serbatoio parte vuoto, capienza 50
+        this.inventory = new Inventory(3); //inventario con 3 slot iniziali
         this.moving = false;
     }
 
@@ -140,5 +142,10 @@ public class DroneImpl implements Drone {
     @Override
     public void rechargeWaterAtLake() {
         this.waterTank.fill();
+    }
+
+    @Override
+    public Inventory getInventory() {
+        return this.inventory;
     }
 }

@@ -81,4 +81,9 @@ public interface Drone {
      * viene chiamata quando il drone si trova sull hanggar
      */
     void rechargeAtHangar();
+
+    /**
+     * @return l'inventario del drone con i suoi slot
+     */
+    Inventory getInventory();
 }

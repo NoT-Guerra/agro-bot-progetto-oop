@@ -104,4 +104,19 @@ public class Inventory {
     public InventorySlot getSlot(int index) {
         return this.slots.get(index);
     }
+
+    /**
+     * cerca il tipo di un oggetto presente nell inventario dato il suo nome
+     * 
+     * @param itemName il nome dell oggetto da cercare
+     * @return il tipo dell oggetto se trovato, null altrimenti
+     */
+    public ItemType findItemType(String itemName) {
+        for (InventorySlot slot : this.slots) {
+            if (!slot.isEmpty() && slot.getItemName().equals(itemName)) {
+                return slot.getType();
+            }
+        }
+        return null;
+    }
 }
